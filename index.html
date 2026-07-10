@@ -56,18 +56,17 @@ nav{
   opacity:0;animation:fadeUp .6s .3s forwards
 }
 .hero-name span{color:var(--blue)}
-.hero-roles{
-  font-size:.85rem;font-weight:400;color:var(--muted);
-  margin-bottom:2rem;display:flex;flex-wrap:wrap;gap:.35rem .75rem;
+.hero-tagline{
+  font-size:1.5rem;font-weight:400;color:var(--text-dim);
+  max-width:560px;margin-bottom:1.5rem;line-height:1.5;
   opacity:0;animation:fadeUp .6s .4s forwards
 }
-.hero-roles .sep{color:var(--border-subtle)}
-.hero-tagline{
-  font-size:1.15rem;font-weight:400;color:var(--text-dim);
-  max-width:520px;margin-bottom:2.75rem;line-height:1.75;
+.hero-tagline em{color:var(--blue);font-style:normal;font-weight:500}
+.hero-support{
+  font-size:.95rem;font-weight:400;color:var(--muted);
+  max-width:540px;margin-bottom:2.75rem;line-height:1.7;
   opacity:0;animation:fadeUp .6s .5s forwards
 }
-.hero-tagline em{color:var(--blue);font-style:normal;font-weight:500}
 .hero-ctas{
   display:flex;flex-wrap:wrap;gap:.75rem;
   opacity:0;animation:fadeUp .6s .6s forwards
@@ -100,7 +99,7 @@ section{max-width:1100px;margin:0 auto;padding:5.5rem 2.5rem}
 
 /* FEATURED PROJECTS */
 .featured-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;
   background:var(--border);border:1px solid var(--border);margin-bottom:1px;
   border-radius:10px;overflow:hidden
 }
@@ -119,6 +118,8 @@ section{max-width:1100px;margin:0 auto;padding:5.5rem 2.5rem}
 .project-domain{font-size:.7rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .prod-badge{display:flex;align-items:center;gap:.4rem;font-size:.65rem;font-weight:600;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
 .prod-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.prod-badge.status-deployed{color:var(--muted)}
+.prod-badge.status-deployed .prod-dot{background:var(--muted);animation:none}
 .role-badge{font-size:.7rem;font-weight:500;color:var(--blue);letter-spacing:.02em}
 .project-name{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;letter-spacing:-.01em;color:var(--text)}
 .project-desc{font-size:.875rem;color:var(--muted);line-height:1.7;flex:1}
@@ -256,24 +257,16 @@ footer{
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <p class="hero-eyebrow">AI Engineer</p>
+  <p class="hero-eyebrow">AI Engineer, Production-Focused</p>
   <h1 class="hero-name">Jibin<br>Kunjumon</h1>
 
-  <div class="hero-roles">
-    <span>Tech Lead</span>
-    <span class="sep">/</span>
-    <span>Agentic Systems</span>
-    <span class="sep">/</span>
-    <span>LLMs</span>
-    <span class="sep">/</span>
-    <span>RAG Pipelines</span>
-    <span class="sep">/</span>
-    <span>Multi-Agent</span>
-  </div>
-
   <p class="hero-tagline">
-    I build AI systems that don't just <em>answer</em> —<br>
-    they reason, retrieve, and act in <em>production</em>.
+    The model proposes.<br>
+    My <em>code</em> decides.
+  </p>
+
+  <p class="hero-support">
+    Six shipped systems across healthcare, fintech, and e-commerce — each built so the model can reason and draft, but the decision that matters runs through deterministic, auditable code.
   </p>
 
   <div class="hero-ctas">
@@ -298,7 +291,6 @@ footer{
     <div class="project-featured">
       <div class="project-meta">
         <span class="project-domain">E-commerce AI</span>
-        <span class="prod-badge"><span class="prod-dot"></span>Live</span>
       </div>
       <span class="role-badge">Tech Lead</span>
       <h3 class="project-name">Revenue Recovery Engine</h3>
@@ -320,7 +312,7 @@ footer{
     <div class="project-featured">
       <div class="project-meta">
         <span class="project-domain">Healthcare AI</span>
-        <span class="prod-badge"><span class="prod-dot"></span>Live</span>
+        <span class="prod-badge status-deployed"><span class="prod-dot"></span>Deployed</span>
       </div>
       <span class="role-badge">Founding Engineer</span>
       <h3 class="project-name">RemiMinder</h3>
@@ -334,6 +326,28 @@ footer{
         <span class="badge">Cloud Run</span>
         <span class="badge">Vertex AI</span>
         <span class="badge">MedGemma</span>
+      </div>
+      <a class="project-link" href="#">Private</a>
+    </div>
+
+    <!-- MindGym -->
+    <div class="project-featured">
+      <div class="project-meta">
+        <span class="project-domain">Mental Health AI</span>
+        <span class="prod-badge"><span class="prod-dot"></span>Live</span>
+      </div>
+      <span class="role-badge">Founding Engineer</span>
+      <h3 class="project-name">MindGym</h3>
+      <p class="project-desc">
+        Voice-guided mental-performance companion that adapts its coaching tone to how the user is feeling. A single <strong>GPT-4o</strong> call — not a multi-agent chain — keeps every response under a hard <strong>10-second timeout</strong>, with a validation layer that rejects unsafe or off-tone output before it reaches the user.
+      </p>
+      <div class="tech-badges">
+        <span class="badge">Python</span>
+        <span class="badge">FastAPI</span>
+        <span class="badge">GPT-4o</span>
+        <span class="badge">ElevenLabs</span>
+        <span class="badge">Next.js</span>
+        <span class="badge">Supabase</span>
       </div>
       <a class="project-link" href="#">Private</a>
     </div>
