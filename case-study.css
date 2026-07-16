@@ -1,0 +1,54 @@
+/* CASE STUDY BREADCRUMB */
+.case-study-breadcrumb{
+  max-width:760px;margin:0 auto;padding:6rem 2.5rem 0
+}
+.case-study-breadcrumb a{
+  font-size:.8rem;font-weight:500;color:var(--muted);text-decoration:none;
+  display:inline-flex;align-items:center;gap:.4rem;transition:color .2s
+}
+.case-study-breadcrumb a:hover{color:var(--blue)}
+
+/* CASE STUDY HEADER */
+.case-study-header{
+  max-width:760px;margin:0 auto;padding:1.5rem 2.5rem 3rem;
+  border-bottom:1px solid var(--border)
+}
+.case-study-meta{display:flex;align-items:center;gap:1rem;margin-bottom:1rem}
+.case-study-title{
+  font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3rem);
+  font-weight:800;letter-spacing:-.03em;line-height:1.1
+}
+
+/* CASE STUDY BODY */
+.case-study-body{max-width:760px;margin:0 auto;padding:3.5rem 2.5rem}
+.case-study-body h2{
+  font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;
+  letter-spacing:-.02em;margin:3rem 0 1.25rem
+}
+.case-study-body h2:first-child{margin-top:0}
+.case-study-body h3{
+  font-size:1.05rem;font-weight:600;color:var(--text);
+  margin:1.75rem 0 .6rem;letter-spacing:-.01em
+}
+.case-study-body p{font-size:.975rem;color:var(--text-dim);line-height:1.85;margin-bottom:1.1rem}
+.case-study-body strong{color:var(--text);font-weight:500}
+
+/* ARCHITECTURE DIAGRAM */
+.arch-diagram{
+  display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;
+  margin:1.5rem 0 2rem;padding:1.5rem;
+  background:var(--surface);border:1px solid var(--border);border-radius:10px
+}
+.arch-box{
+  padding:.75rem 1.1rem;background:var(--surface2);border:1px solid var(--border-subtle);
+  border-radius:6px;font-size:.8rem;font-weight:500;color:var(--text-dim);
+  text-align:center
+}
+.arch-arrow{color:var(--muted);font-size:.9rem;flex-shrink:0}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .case-study-breadcrumb,.case-study-header,.case-study-body{padding-left:1.25rem;padding-right:1.25rem}
+  .arch-diagram{flex-direction:column;align-items:stretch}
+  .arch-arrow{transform:rotate(90deg);text-align:center}
+}
