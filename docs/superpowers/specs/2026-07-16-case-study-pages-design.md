@@ -39,7 +39,7 @@ On each of the 3 featured cards, replace:
 ```html
 <a class="project-link" href="case-studies/<slug>.html">Read Case Study</a>
 ```
-The existing top-right status badge (`prod-badge` / `status-deployed`) still communicates Private/Deployed/Live — no information is lost. Nothing else on the homepage changes.
+The existing top-right status badge (`prod-badge` / `status-deployed`) still communicates Deployed/Live for RemiMinder and MindGym — no information is lost there. RRE has no such badge today (its "Private — PM Accelerator" status lives only in the link text), so RRE's card gets a new `<span class="prod-badge status-deployed">Private — PM Accelerator</span>` added to its `project-meta` row — reusing the existing muted, no-animation badge style — before its link is swapped, so the status isn't silently dropped. Nothing else on the homepage changes.
 
 ## Case-Study Page Template
 
