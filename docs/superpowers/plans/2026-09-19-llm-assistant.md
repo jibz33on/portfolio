@@ -96,11 +96,14 @@ node_modules/
 - [ ] **Step 4: Verify the test runner still works**
 
 Run: `npm test`
-Expected: **6 passed** — the existing `assistant/assistant-match.test.js` suite,
-which Task 6 deletes. Adding `"type": "module"` must not break it. If it errors,
-stop: every later task depends on this working.
+Expected: **0 tests, exit 0.**
 
-Baseline to carry forward: **6 tests until Task 6 removes them.**
+Note: `"type": "module"` makes every `.js` file ESM, which breaks the legacy
+CommonJS `assistant/assistant-match.test.js` (it uses `require()`). That file is
+deleted in this step rather than in Task 6. `assistant-match.js` and
+`portfolio-data.js` stay until Task 6, because the widget still references them.
+
+Baseline to carry forward: **0 tests.**
 
 - [ ] **Step 5: Commit**
 
@@ -268,7 +271,7 @@ belongs in the four case-study entries.
 - [ ] **Step 4: Run the drift test until green**
 
 Run: `npm test`
-Expected: **11 passed** (6 legacy + 5 drift). If a name assertion fails, the
+Expected: **5 passed** (drift). If a name assertion fails, the
 corpus is missing that entity — add it rather than weakening the test.
 
 - [ ] **Step 5: Record the maintenance relationship in `.claude/CLAUDE.md`**
@@ -401,7 +404,7 @@ export function validateMessages(messages) {
 - [ ] **Step 4: Run until green**
 
 Run: `npm test`
-Expected: **20 passed** (6 legacy + 5 drift + 9 validation).
+Expected: **14 passed** (5 drift + 9 validation).
 
 - [ ] **Step 5: Commit**
 
@@ -513,7 +516,7 @@ ${corpus}`;
 - [ ] **Step 4: Run until green**
 
 Run: `npm test`
-Expected: **23 passed** (6 legacy + 5 drift + 12 chat-core).
+Expected: **17 passed** (5 drift + 12 chat-core).
 
 - [ ] **Step 5: Commit**
 
@@ -801,14 +804,16 @@ Expected: only matches inside `assistant/assistant-match.js` and its test, which
 - [ ] **Step 4: Delete the legacy files**
 
 ```bash
-git rm assistant/assistant-match.js assistant/assistant-match.test.js assistant/portfolio-data.js
+git rm assistant/assistant-match.js assistant/portfolio-data.js
 ```
+
+`assistant-match.test.js` was already deleted in Task 1.
 
 - [ ] **Step 5: Verify tests still pass**
 
 Run: `npm test`
-Expected: **17 passed** — down from 23, because the 6 legacy matcher tests were
-just deleted. That drop is the expected signal, not a regression.
+Expected: **17 passed**, unchanged. Deleting the matcher implementation must
+not change the count — its test was already removed in Task 1.
 
 - [ ] **Step 6: Verify in the browser**
 
