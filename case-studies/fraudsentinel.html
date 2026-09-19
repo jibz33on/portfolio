@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FraudSentinel — Case Study | Jibin Kunjumon</title>
+<meta name="description" content="An auditable multi-agent fraud investigation workflow on LangGraph — LLM-based investigation kept separate from deterministic, auditable risk scoring."/>
+<meta property="og:title" content="FraudSentinel — Case Study | Jibin Kunjumon"/>
+<meta property="og:description" content="An auditable multi-agent fraud investigation workflow on LangGraph — LLM-based investigation kept separate from deterministic, auditable risk scoring."/>
+<meta property="og:type" content="article"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles.css"/>
+<link rel="stylesheet" href="../case-study.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><a href="../index.html" style="color:inherit;text-decoration:none">Jibin<span>.</span></a></div>
+  <ul class="nav-links">
+    <li><a href="../index.html#hero">Home</a></li>
+    <li><a href="../index.html#experience">Experience</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#certificates">Certificates</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="case-study-breadcrumb">
+  <a href="../index.html#projects">← Back to Projects</a>
+</div>
+
+<header class="case-study-header">
+  <div class="case-study-meta">
+    <span class="project-domain">Fraud Detection AI</span>
+    <span class="role-badge">Solo Builder</span>
+  </div>
+  <h1 class="case-study-title">FraudSentinel</h1>
+</header>
+
+<article class="case-study-body">
+  <h2>Overview</h2>
+  <p>FraudSentinel is a three-agent fraud investigation workflow built solo on LangGraph. It flags suspicious transactions and produces a verdict a human reviewer can actually act on — why something was flagged, not just a black-box risk score.</p>
+  <p>The agents are coordinated through shared workflow state rather than operating as independent services, and the system deliberately keeps the final risk decision out of the LLM's hands.</p>
+
+  <h2>The Problem</h2>
+  <p>Fraud detection systems tend to fail in one of two directions: an opaque score a reviewer can't interrogate, or an LLM given unrestricted authority to call a transaction fraudulent — which makes the decision hard to reproduce or audit. Neither is good enough for a decision with real financial consequences.</p>
+  <p>The problem FraudSentinel set out to solve was building a multi-stage investigation — one where an LLM could reason about and investigate a transaction, but the final risk decision stayed predictable and traceable back to the evidence that produced it.</p>
+
+  <h2>Architecture</h2>
+  <div class="arch-diagram">
+    <div class="arch-box">Transaction</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Detector</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Investigator</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Decision</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Deterministic Risk Scoring + Verdict</div>
+  </div>
+  <p>A transaction enters the workflow and is first screened by the <strong>Detector</strong>, which identifies suspicious signals warranting further investigation — it has no authority to declare a verdict itself. If flagged, the <strong>Investigator</strong> gathers broader context, pulling relevant stored information via Supabase/pgvector to build a fuller picture beyond the initial signal. The <strong>Decision</strong> stage then receives everything accumulated so far and produces the final verdict — but the risk score itself is calculated by deterministic, rule-based logic kept separate from the LLM's reasoning.</p>
+  <p>The three stages share state through LangGraph, with checkpointing so information from one stage is available to the next without each agent reconstructing the investigation from scratch.</p>
+
+  <h2>Approach &amp; My Role</h2>
+  <p>I designed and built FraudSentinel end to end as a solo project. The core engineering decision was architectural: separate the workflow into distinct stages with clear responsibilities — detection, investigation, decision — and route the actual risk calculation through deterministic logic rather than the LLM, so the final verdict is reproducible and auditable.</p>
+  <p>Beyond the three-agent flow, I built in the reliability characteristics a multi-stage workflow needs to be trustworthy: async concurrent checks where investigation steps are independent, idempotency handling, and retry logic for transient failures.</p>
+
+  <h2>Technical Decisions</h2>
+  <h3>Keeping risk scoring deterministic and separate from the LLM</h3>
+  <p>The Investigator and Detector can reason about and interpret a transaction, but the Decision stage's risk calculation is rule-based, not model-generated. This was a deliberate boundary: LLM agents provide analysis and investigation, deterministic logic provides the auditable risk decision. A fraud verdict needs to be explainable and reproducible in a way that unconstrained LLM output isn't.</p>
+  <h3>Coordinating three specialized agents through shared state, not one large agent</h3>
+  <p>Rather than one agent handling detection through decision, the workflow is split into three narrower, more testable stages, coordinated through LangGraph's shared state and checkpointing. Each stage has one clear responsibility, and the Detector in particular is explicitly denied final authority — it can only flag, never conclude.</p>
+  <h3>Designing for concurrency, idempotency, and retries from the start</h3>
+  <p>Once a workflow has multiple stages, shared state, and the possibility of concurrent investigation checks, reliability isn't something to bolt on afterward — a failed or repeated operation has to not silently produce an inconsistent result. This shaped the architecture from the beginning rather than being retrofitted.</p>
+
+  <h2>Challenges</h2>
+  <p>The main challenge was maintaining a clean boundary between LLM-based investigation/reasoning and deterministic risk scoring. It would have been easy to let the LLM's interpretation directly influence the final fraud score, but that would make the decision harder to reproduce and audit — so the workflow had to be designed so agents could gather and reason about evidence while the final risk calculation stayed controlled by deterministic rules.</p>
+  <p>A related challenge was making the multi-agent workflow itself reliable: because the three stages share state and some investigation checks can run concurrently, I had to think carefully about state consistency, retries, and idempotency so a failed or repeated operation wouldn't produce inconsistent results. The core difficulty was balancing the flexibility of agentic reasoning against the predictability a fraud-detection workflow actually needs.</p>
+
+  <h2>Results</h2>
+  <p>FraudSentinel successfully demonstrated the intended end-to-end workflow — transaction → detection → contextual investigation → final decision — combining agent-based investigation with deterministic risk scoring. The result worth emphasizing is the separation itself: the LLM agents analyze the transaction and gather context, while the final risk assessment remains deterministic, predictable, and traceable back to the evidence that produced it, rather than depending on an LLM's free-form judgment.</p>
+
+  <h2>Lessons Learned</h2>
+  <p>Building FraudSentinel taught me that adding more agents doesn't automatically make a system better — each agent needs a clearly defined responsibility and a reason to exist. The biggest lesson was the importance of a hard boundary between probabilistic LLM reasoning and deterministic application logic: the LLM is valuable for interpreting context and investigating, but decisions that need to be reproducible and auditable should stay under explicit rules.</p>
+  <p>As a solo builder, I also learned that reliability concerns need to be designed in early rather than bolted on later — once a workflow has multiple stages, shared state, retries, and concurrency, things like idempotency and state consistency become core architecture, not implementation details. If I built it again, I'd define the agent boundaries and the deterministic decision boundary even earlier, and keep each agent as narrow and testable as possible. The broader lesson: agentic architecture should be justified by the problem, not used simply because multiple agents are possible.</p>
+
+  <h2>Tech Stack</h2>
+  <div class="tech-badges">
+    <span class="badge">Python</span>
+    <span class="badge">FastAPI</span>
+    <span class="badge">LangGraph</span>
+    <span class="badge">Llama 3.3 70B</span>
+    <span class="badge">Supabase</span>
+    <span class="badge">pgvector</span>
+    <span class="badge">Next.js</span>
+  </div>
+
+  <h2>GitHub &amp; Demo</h2>
+  <p>Private project — code isn't publicly shared.</p>
+</article>
+
+<footer>
+  <span class="footer-text">Built by Jibin Kunjumon · 2026</span>
+  <div class="footer-links">
+    <a href="https://github.com/jibz33on" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/jibin-kunjumon" target="_blank">LinkedIn</a>
+    <a href="mailto:jibz33on@gmail.com">Email</a>
+  </div>
+</footer>
+
+</body>
+</html>
