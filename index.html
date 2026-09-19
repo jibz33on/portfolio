@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Jibin Kunjumon | AI Engineer</title>
+<title>Jibin Kunjumon | AI Engineer — RAG, Agentic Systems &amp; LLM Evaluation</title>
+<meta name="description" content="AI Engineer specializing in RAG, agentic systems, and LLM evaluation. Production GenAI systems shipped across healthcare, fintech, and e-commerce."/>
+<meta property="og:title" content="Jibin Kunjumon | AI Engineer"/>
+<meta property="og:description" content="AI Engineer specializing in RAG, agentic systems, and LLM evaluation. Production GenAI systems shipped across healthcare, fintech, and e-commerce."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://jibink.com/"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 </head>
@@ -11,17 +16,26 @@
 
 <nav>
   <div class="nav-logo">Jibin<span>.</span></div>
+  <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Projects</a></li>
-    <li><a href="#stack">Stack</a></li>
-    <li><a href="#about">About</a></li>
+    <li><a href="#certificates">Certificates</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <a class="nav-cta btn-primary" href="#contact">Let's Talk</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <p class="hero-eyebrow">AI Engineer, Production-Focused</p>
+  <div class="hero-status">
+    <span class="status-dot"></span>
+    <span>Available — Open to AI Engineer roles · Remote · India-based</span>
+  </div>
+  <p class="hero-eyebrow">AI Engineer · GenAI &amp; Agentic Systems · LLM Evaluation</p>
   <h1 class="hero-name">Jibin<br>Kunjumon</h1>
 
   <p class="hero-tagline">
@@ -30,13 +44,18 @@
   </p>
 
   <p class="hero-support">
-    Six shipped systems across healthcare, fintech, and e-commerce — each built so the model can reason and draft, but the decision that matters runs through deterministic, auditable code.
+    Five production systems shipped across healthcare, fintech, and e-commerce, plus hands-on LLM evaluation and observability work on a live agentic RAG product — each built so the model can reason and draft, but the decision that matters runs through deterministic, auditable code.
   </p>
 
   <div class="hero-ctas">
     <a class="btn-primary" href="#projects">View Projects</a>
-    <a class="btn-ghost" href="https://github.com/jibz33on" target="_blank">GitHub ↗</a>
-    <a class="btn-ghost" href="#contact">Contact</a>
+    <a class="btn-ghost" href="#contact">Let's Talk</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="hero-stat-num">5</span><span class="hero-stat-label">Systems Shipped</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">3</span><span class="hero-stat-label">Domains</span></div>
+    <div class="hero-stat"><span class="hero-stat-num">250+</span><span class="hero-stat-label">Eval Cases Reviewed</span></div>
   </div>
 
   <p class="hero-meta">B.Tech · CUSAT &nbsp;·&nbsp; M.Acc · Deakin University, Australia</p>
@@ -173,101 +192,6 @@
   </div>
 </section>
 
-<!-- STACK -->
-<section id="stack">
-  <div class="section-header reveal">
-    <span class="section-num">02</span>
-    <h2 class="section-title">Technical Stack</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="stack-grid reveal">
-    <div class="stack-col">
-      <div class="stack-col-header"><span class="stack-col-icon">⌨</span><span class="stack-col-title">Languages &amp; Frameworks</span></div>
-      <div class="stack-item"><span class="stack-name">Python</span><span class="stack-tag">Expert</span></div>
-      <div class="stack-item"><span class="stack-name">TypeScript</span><span class="stack-tag">Expert</span></div>
-      <div class="stack-item"><span class="stack-name">FastAPI</span><span class="stack-tag">Advanced</span></div>
-      <div class="stack-item"><span class="stack-name">Next.js</span><span class="stack-tag">Advanced</span></div>
-      <div class="stack-item"><span class="stack-name">Node.js</span><span class="stack-tag">Advanced</span></div>
-    </div>
-    <div class="stack-col">
-      <div class="stack-col-header"><span class="stack-col-icon">🧠</span><span class="stack-col-title">AI / ML Stack</span></div>
-      <div class="stack-item"><span class="stack-name">LangChain / LangGraph</span><span class="stack-tag">Agentic Ops</span></div>
-      <div class="stack-item"><span class="stack-name">Vertex AI · MedGemma</span><span class="stack-tag">GCP Stack</span></div>
-      <div class="stack-item"><span class="stack-name">FinBERT · GPT-4</span><span class="stack-tag">Sentiment / LLM</span></div>
-      <div class="stack-item"><span class="stack-name">ChromaDB · pgvector</span><span class="stack-tag">Vector Store</span></div>
-      <div class="stack-item"><span class="stack-name">Tavily · RAG Pipelines</span><span class="stack-tag">Retrieval</span></div>
-    </div>
-    <div class="stack-col">
-      <div class="stack-col-header"><span class="stack-col-icon">☁</span><span class="stack-col-title">Infrastructure</span></div>
-      <div class="stack-item"><span class="stack-name">GCP · Cloud Run</span><span class="stack-tag">Cloud Compute</span></div>
-      <div class="stack-item"><span class="stack-name">Docker</span><span class="stack-tag">Containerisation</span></div>
-      <div class="stack-item"><span class="stack-name">Supabase · MongoDB</span><span class="stack-tag">Persistence</span></div>
-      <div class="stack-item"><span class="stack-name">Inngest</span><span class="stack-tag">Orchestration</span></div>
-      <div class="stack-item"><span class="stack-name">GitHub Actions</span><span class="stack-tag">CI/CD</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about">
-  <div class="section-header reveal">
-    <span class="section-num">03</span>
-    <h2 class="section-title">About</h2>
-    <div class="section-line"></div>
-  </div>
-
-  <div class="about-grid">
-    <div class="about-text reveal">
-      <p>I'm an AI Engineer and Tech Lead who's spent the last year shipping agentic systems across <strong>healthcare, fintech, and e-commerce</strong> — from solo hackathon builds to leading multi-person teams on production pipelines.</p>
-      <p>I care about systems that actually work: <strong>clean orchestration, schema discipline, test coverage,</strong> and agents that don't hallucinate off the rails. The gap between LLM demo and production system is where I operate.</p>
-      <p>Currently Tech Lead on the <strong>Revenue Recovery Engine</strong> at PM Accelerator — a multi-agent AI pipeline for e-commerce. Actively open to AI Engineer roles, remote preferred.</p>
-
-      <div class="about-status">
-        <div class="status-dot"></div>
-        <div class="status-text"><strong>Available</strong> — Open to AI Engineer / Tech Lead roles · Remote · India-based</div>
-      </div>
-    </div>
-
-    <div class="reveal">
-      <div class="about-stats">
-        <div class="stat-box">
-          <div class="stat-num">3</div>
-          <div class="stat-label">AI Systems Built</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">1yr</div>
-          <div class="stat-label">AI Engineering</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">3</div>
-          <div class="stat-label">Domains Covered</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-num">6+</div>
-          <div class="stat-label">Production Deploys</div>
-        </div>
-      </div>
-      <div class="edu-block">
-        <div class="edu-item">
-          <div class="edu-dot"></div>
-          <div>
-            <div class="edu-degree">B.Tech — Cochin University of Science &amp; Technology</div>
-            <div class="edu-school">CUSAT · Kochi, India</div>
-          </div>
-        </div>
-        <div class="edu-item">
-          <div class="edu-dot"></div>
-          <div>
-            <div class="edu-degree">Master of Accounting — Deakin University</div>
-            <div class="edu-school">Deakin · Australia</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-inner reveal">
@@ -300,6 +224,20 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // Staggered reveal
 document.querySelectorAll('.reveal').forEach((el, i) => {
   el.style.transitionDelay = `${(i % 4) * 0.08}s`;
+});
+
+// Mobile nav toggle
+const navToggle = document.querySelector('.nav-toggle');
+const navLinksEl = document.querySelector('.nav-links');
+navToggle.addEventListener('click', () => {
+  const isOpen = navLinksEl.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', String(isOpen));
+});
+navLinksEl.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinksEl.classList.remove('open');
+    navToggle.setAttribute('aria-expanded', 'false');
+  });
 });
 </script>
 </body>
