@@ -6,3 +6,12 @@
 # Local agent skills (not for public repo)
 .agents/
 skills-lock.json
+
+# macOS
+.DS_Store
+
+# Personal source material (not for public repo).
+# The site serves the optimized copy at assets/images/profile.jpg instead.
+docs/Resume/
+docs/Profile pic/
+docs/brand/

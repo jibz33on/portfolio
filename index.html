@@ -9,7 +9,7 @@
 <meta property="og:description" content="AI Engineer specializing in RAG, agentic systems, and LLM evaluation. Production GenAI systems shipped across healthcare, fintech, and e-commerce."/>
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="https://jibink.com/"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
@@ -31,47 +31,53 @@
 
 <!-- HERO -->
 <section class="hero" id="hero">
-  <div class="hero-status">
-    <span class="status-dot"></span>
-    <span>Available — Open to AI Engineer roles · Remote · India-based</span>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <p class="hero-eyebrow">AI Engineer · GenAI &amp; Agentic Systems · LLM Evaluation</p>
+      <h1 class="hero-name">Jibin Kunjumon</h1>
+
+      <p class="hero-tagline">
+        The model proposes.<br>
+        My <em>code</em> decides.
+      </p>
+
+      <p class="hero-support">
+        Five production systems shipped across healthcare, fintech, and e-commerce, plus hands-on LLM evaluation and observability work on a live agentic RAG product — each built so the model can reason and draft, but the decision that matters runs through deterministic, auditable code.
+      </p>
+
+      <div class="hero-ctas">
+        <a class="btn-primary" href="#projects">View Projects</a>
+        <a class="btn-ghost" href="#contact">Let's Talk</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-stat"><span class="hero-stat-num">5</span><span class="hero-stat-label">Systems Shipped</span></div>
+        <div class="hero-stat"><span class="hero-stat-num">3</span><span class="hero-stat-label">Domains</span></div>
+        <div class="hero-stat"><span class="hero-stat-num">250+</span><span class="hero-stat-label">Eval Cases Reviewed</span></div>
+      </div>
+
+      <p class="hero-meta">B.Tech · CUSAT &nbsp;·&nbsp; M.Acc · Deakin University, Australia</p>
+    </div>
+
+    <div class="hero-photo">
+      <div class="hero-photo-glow"></div>
+      <div class="hero-photo-frame">
+        <img src="assets/images/profile.jpg" alt="Jibin Kunjumon" class="hero-photo-img" width="900" height="900"/>
+      </div>
+    </div>
   </div>
-  <p class="hero-eyebrow">AI Engineer · GenAI &amp; Agentic Systems · LLM Evaluation</p>
-  <h1 class="hero-name">Jibin<br>Kunjumon</h1>
-
-  <p class="hero-tagline">
-    The model proposes.<br>
-    My <em>code</em> decides.
-  </p>
-
-  <p class="hero-support">
-    Five production systems shipped across healthcare, fintech, and e-commerce, plus hands-on LLM evaluation and observability work on a live agentic RAG product — each built so the model can reason and draft, but the decision that matters runs through deterministic, auditable code.
-  </p>
-
-  <div class="hero-ctas">
-    <a class="btn-primary" href="#projects">View Projects</a>
-    <a class="btn-ghost" href="#contact">Let's Talk</a>
-  </div>
-
-  <div class="hero-stats">
-    <div class="hero-stat"><span class="hero-stat-num">5</span><span class="hero-stat-label">Systems Shipped</span></div>
-    <div class="hero-stat"><span class="hero-stat-num">3</span><span class="hero-stat-label">Domains</span></div>
-    <div class="hero-stat"><span class="hero-stat-num">250+</span><span class="hero-stat-label">Eval Cases Reviewed</span></div>
-  </div>
-
-  <p class="hero-meta">B.Tech · CUSAT &nbsp;·&nbsp; M.Acc · Deakin University, Australia</p>
 </section>
 
 <!-- SELECTED WORK -->
 <section id="projects">
   <div class="section-header reveal">
-    <span class="section-num">01</span>
     <h2 class="section-title">Selected Work</h2>
     <div class="section-line"></div>
   </div>
 
   <div class="featured-grid reveal">
     <!-- Gistr -->
-    <div class="project-featured">
+    <div class="project-featured flagship">
       <div class="project-meta">
         <span class="project-domain">LLM Evaluation</span>
       </div>
@@ -91,7 +97,7 @@
     </div>
 
     <!-- RRE -->
-    <div class="project-featured">
+    <div class="project-featured flagship">
       <div class="project-meta">
         <span class="project-domain">E-commerce AI</span>
         <span class="prod-badge status-deployed"><span class="prod-dot"></span>Private — PM Accelerator</span>
@@ -157,7 +163,6 @@
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="section-header reveal">
-    <span class="section-num">02</span>
     <h2 class="section-title">Experience</h2>
     <div class="section-line"></div>
   </div>
@@ -239,7 +244,6 @@
 <!-- MORE WORK -->
 <section id="more-work">
   <div class="section-header reveal">
-    <span class="section-num">03</span>
     <h2 class="section-title">More Work</h2>
     <div class="section-line"></div>
   </div>
@@ -318,10 +322,55 @@
   </div>
 </section>
 
+<!-- RECOMMENDATIONS -->
+<section id="recommendations">
+  <div class="section-header reveal">
+    <h2 class="section-title">Recommendations</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="section-lede reveal">What people I've worked with say</p>
+
+  <div class="rec-grid reveal">
+    <figure class="rec-card">
+      <span class="rec-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote class="rec-quote">He developed our evaluation system from the ground up, creating an agent-as-judge pipeline that analyzes traces for tool usage, latency, cost, and failure reasoning, and incorporates human-reviewed golden datasets and in-depth investigations.</blockquote>
+      <figcaption class="rec-author">
+        <span class="rec-name">Arun Antony</span>
+        <span class="rec-title">Founder @ Gistr.so</span>
+        <span class="rec-context">Gistr · AI Evaluation</span>
+      </figcaption>
+      <a class="rec-link" href="https://www.linkedin.com/in/arunantonya/" target="_blank" rel="noopener">Read recommendation</a>
+    </figure>
+
+    <figure class="rec-card">
+      <span class="rec-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote class="rec-quote">Jibin has been the leader for entire LLM development for Mindgym and has demonstrated strong ownership and capability to develop backend from zero to 1 and has been awarded Tier 3: AI Rising Star Award!</blockquote>
+      <figcaption class="rec-author">
+        <span class="rec-name">Claire Hong Zhu</span>
+        <span class="rec-title">Data Science Product Leader</span>
+        <span class="rec-context">MindGym · LLM Development</span>
+      </figcaption>
+      <a class="rec-link" href="https://www.linkedin.com/in/clairehzhu/" target="_blank" rel="noopener">Read recommendation</a>
+    </figure>
+
+    <figure class="rec-card">
+      <span class="rec-mark" aria-hidden="true">&ldquo;</span>
+      <blockquote class="rec-quote">He was instrumental in architecting our 'Data Integrity Layer,' moving the project beyond simple LLM prompts into a strictly typed, contract-first system.</blockquote>
+      <figcaption class="rec-author">
+        <span class="rec-name">Sahal Alarabi</span>
+        <span class="rec-title">Technical Product Strategist</span>
+        <span class="rec-context">Revenue Recovery Engine · Backend &amp; Architecture</span>
+      </figcaption>
+      <a class="rec-link" href="https://www.linkedin.com/in/sahalalarabi/" target="_blank" rel="noopener">Read recommendation</a>
+    </figure>
+  </div>
+
+  <a class="rec-all" href="https://linkedin.com/in/jibin-kunjumon" target="_blank" rel="noopener">View all recommendations on LinkedIn</a>
+</section>
+
 <!-- CERTIFICATES -->
 <section id="certificates">
   <div class="section-header reveal">
-    <span class="section-num">04</span>
     <h2 class="section-title">Certificates</h2>
     <div class="section-line"></div>
   </div>
@@ -402,6 +451,27 @@ navLinksEl.querySelectorAll('a').forEach(link => {
     navLinksEl.classList.remove('open');
     navToggle.setAttribute('aria-expanded', 'false');
   });
+});
+
+// Scroll-spy active nav indicator
+const navLinkMap = {};
+navLinksEl.querySelectorAll('a').forEach(a => {
+  navLinkMap[a.getAttribute('href').replace('#', '')] = a;
+});
+const spySectionToNavId = { hero:'hero', projects:'projects', experience:'experience', 'more-work':'projects', certificates:'certificates', contact:'contact' };
+const spyObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const navId = spySectionToNavId[entry.target.id];
+    const activeLink = navLinkMap[navId];
+    if (!activeLink) return;
+    Object.values(navLinkMap).forEach(a => a.classList.remove('active'));
+    activeLink.classList.add('active');
+  });
+}, {rootMargin: '-45% 0px -50% 0px'});
+Object.keys(spySectionToNavId).forEach(id => {
+  const el = document.getElementById(id);
+  if (el) spyObserver.observe(el);
 });
 </script>
 
