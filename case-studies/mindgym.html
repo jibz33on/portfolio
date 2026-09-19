@@ -110,5 +110,26 @@
   </div>
 </footer>
 
+<!-- AI PORTFOLIO ASSISTANT -->
+<div class="assistant">
+  <button class="assistant-toggle" aria-label="Ask about Jibin's work" aria-expanded="false">Ask AI</button>
+  <div class="assistant-panel">
+    <div class="assistant-header">
+      <span>Ask about Jibin's work</span>
+    </div>
+    <p class="assistant-note">Answers are drawn only from this portfolio's structured project and experience data.</p>
+    <div class="assistant-chips"></div>
+    <div class="assistant-messages"></div>
+    <form class="assistant-form">
+      <input class="assistant-input" type="text" placeholder="Ask a question…" autocomplete="off"/>
+      <button class="btn-primary" type="submit">Send</button>
+    </form>
+  </div>
+</div>
+
+<script src="../assistant/portfolio-data.js"></script>
+<script src="../assistant/assistant-match.js"></script>
+<script src="../assistant/assistant-widget.js"></script>
+
 </body>
 </html>
