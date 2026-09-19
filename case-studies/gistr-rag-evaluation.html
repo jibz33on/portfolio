@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Gistr — RAG Evaluation Case Study | Jibin Kunjumon</title>
+<meta name="description" content="LLM evaluation and RAG answer-quality work for a production learning platform — evidence grounding, correctness evaluation, and retrieval diagnostics."/>
+<meta property="og:title" content="Gistr — RAG Evaluation Case Study | Jibin Kunjumon"/>
+<meta property="og:description" content="LLM evaluation and RAG answer-quality work for a production learning platform — evidence grounding, correctness evaluation, and retrieval diagnostics."/>
+<meta property="og:type" content="article"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles.css"/>
+<link rel="stylesheet" href="../case-study.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><a href="../index.html" style="color:inherit;text-decoration:none">Jibin<span>.</span></a></div>
+  <ul class="nav-links">
+    <li><a href="../index.html#hero">Home</a></li>
+    <li><a href="../index.html#experience">Experience</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#certificates">Certificates</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="case-study-breadcrumb">
+  <a href="../index.html#projects">← Back to Projects</a>
+</div>
+
+<header class="case-study-header">
+  <div class="case-study-meta">
+    <span class="project-domain">LLM Evaluation</span>
+    <span class="role-badge">AI Engineer (Contract)</span>
+  </div>
+  <h1 class="case-study-title">Gistr — RAG Evaluation</h1>
+</header>
+
+<article class="case-study-body">
+  <h2>Overview</h2>
+  <p>Gistr is an online learning platform built on agentic Retrieval-Augmented Generation (RAG). Over a three-month contract, I worked on LLM evaluation and answer quality for the product — building the systems and processes needed to measure whether the AI's answers were actually correct and well-supported, not just plausible-sounding.</p>
+  <p>This wasn't a system I built from scratch. It was evaluation and diagnostic work on an existing, live production RAG pipeline: designing how to measure quality, running that measurement at scale, and turning the results into specific findings the engineering team could act on.</p>
+
+  <h2>The Problem</h2>
+  <p>Before this engagement, the product's existing accuracy check was measuring the wrong part of the pipeline — it could pass an answer that sounded right without verifying whether it was actually grounded in real evidence the system had retrieved. That meant genuine failure modes — the AI inventing an answer, or asserting something the retrieved evidence didn't actually support — could slip through undetected.</p>
+  <p>The challenge was building an evaluation approach precise enough to catch those failures specifically, and reliable enough that the results could be trusted to guide real engineering decisions rather than just produce a score.</p>
+
+  <h2>Architecture</h2>
+  <div class="arch-diagram">
+    <div class="arch-box">Query</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Candidate Retrieval</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Reranking</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Final TOP_K Selection</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Answer Generation</div>
+  </div>
+  <p>The RAG pipeline retrieves an initial set of candidate passages, reranks them, and selects a final set of top-ranked evidence before the model generates an answer. My evaluation work focused on measuring quality at each of these stages independently — retrieval, evidence quality, and final answer correctness — rather than treating the end answer as a single pass/fail outcome.</p>
+
+  <h2>Approach &amp; My Role</h2>
+  <p>I built an isolated LLM evaluation system for answer accuracy, designed so that running evaluations could never affect live users or production data. Within that system, I worked across three areas: reviewing real cases by hand to understand actual failure patterns, designing evaluation criteria that separated retrieval quality from answer correctness, and building a hand-labelled golden dataset with version-controlled evaluation prompts so automated scores could be validated against real ground truth.</p>
+  <p>I also investigated how the system's tools were being used during multi-step agent runs, looking for cases where tool calls were wasted or redundant rather than contributing to the final answer.</p>
+
+  <h2>Technical Decisions</h2>
+  <h3>Separating evidence quality from answer correctness</h3>
+  <p>Early on, evaluation results were hard to act on because a single pass/fail label collapsed several different failure modes into one number. I restructured the evaluation around separate dimensions — evidence grounding and answer correctness — so a poor result could be traced back to the retrieval side or the generation side specifically, rather than requiring guesswork about which part of the pipeline actually failed.</p>
+  <h3>Isolating evaluation from production</h3>
+  <p>Testing evaluation changes against a live product carries real risk — a bad evaluation run should never be able to touch live user data or traffic. I built the evaluation system to run in isolation from production, so iteration could happen safely and frequently without that risk.</p>
+
+  <h2>Evaluation</h2>
+  <p>I reviewed cases by hand to build an accurate picture of how the system was actually failing in production, then used that understanding to define evaluation criteria along two dimensions: whether an answer was grounded in the evidence the system had actually retrieved, and whether the answer was correct given that evidence. Cases broke down differently depending on which dimension failed — an answer could be wrong because retrieval surfaced the wrong evidence, or wrong because the model failed to use correct evidence properly.</p>
+  <p>To validate that automated evaluation scores could be trusted, I created a hand-labelled golden dataset with version-controlled evaluation prompts, checking automated results against real ground-truth judgments rather than assuming the automated scores were correct by default.</p>
+  <p>Reviewing hand-labelled cases at scale also surfaced patterns in how the system's agent tools were being used during multi-step runs, including a retrieval redundancy issue affecting a meaningful share of real sessions.</p>
+
+  <h2>Challenges</h2>
+  <p>One of the hardest parts of this work was handling ambiguous evaluation cases. It wasn't enough to label an answer simply correct or incorrect: some answers were correct but backed by weak evidence, some had strong evidence available that the model failed to use correctly, and some couldn't be supported by the available evidence at all.</p>
+  <p>Making those distinctions consistently — consistently enough that the results were useful for diagnosing the system rather than just producing a score — was the difficult part. I worked through these cases and helped structure the evaluation around separate dimensions, evidence grounding and answer correctness, so a poor result could be traced back to the retrieval side or the answer-generation side specifically.</p>
+
+  <h2>Results</h2>
+  <p>Reviewing roughly 250 cases by hand surfaced that the existing accuracy check was measuring the wrong part of the pipeline — it could pass answers that sounded right without verifying they were actually grounded in retrieved evidence. I redesigned the check to catch answers the AI invented or couldn't support with a source.</p>
+  <p>The same review process identified 12 distinct patterns of wasted or redundant agent tool use, including one specific pattern — two retrieval tools returning duplicate content — confirmed across 8 separate production sessions. Findings and remediation recommendations were delivered directly to the engineering team.</p>
+
+  <h2>Lessons Learned</h2>
+  <p>Evaluating a production RAG system taught me that retrieval quality, evidence quality, and answer correctness need to be measured separately rather than treating the final answer as a single pass/fail outcome — collapsing them into one score hides where the system is actually breaking.</p>
+  <p>I also learned that evaluation datasets need to represent real production failure modes. A benchmark can make a system look healthy while still missing problems that only show up in real traffic.</p>
+  <p>If I did this again, I'd establish the evaluation taxonomy and failure categories earlier, and build the golden dataset around those categories before running broader experiments — that makes it much easier to connect evaluation results directly to specific engineering decisions. The bigger lesson was that LLM evaluation isn't just about producing a score; the valuable part is building a system that explains why something failed and what to change next.</p>
+
+  <h2>Tech Stack</h2>
+  <div class="tech-badges">
+    <span class="badge">Python</span>
+    <span class="badge">LangSmith</span>
+    <span class="badge">PostHog</span>
+    <span class="badge">LangGraph</span>
+    <span class="badge">FastAPI</span>
+    <span class="badge">LLM-as-judge</span>
+    <span class="badge">agent-as-judge</span>
+  </div>
+
+  <h2>GitHub &amp; Demo</h2>
+  <p>Private engagement — code and evaluation artifacts belong to Gistr and aren't publicly shareable.</p>
+</article>
+
+<footer>
+  <span class="footer-text">Built by Jibin Kunjumon · 2026</span>
+  <div class="footer-links">
+    <a href="https://github.com/jibz33on" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/jibin-kunjumon" target="_blank">LinkedIn</a>
+    <a href="mailto:jibz33on@gmail.com">Email</a>
+  </div>
+</footer>
+
+</body>
+</html>
