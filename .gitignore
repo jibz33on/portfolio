@@ -2,3 +2,7 @@
 
 # Private notes (not for public repo)
 .claude/
+
+# Local agent skills (not for public repo)
+.agents/
+skills-lock.json
