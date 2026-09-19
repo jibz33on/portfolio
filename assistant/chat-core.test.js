@@ -1,6 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
-import { validateMessages, MAX_MESSAGES, MAX_CONTENT_CHARS } from './chat-core.js';
+import {
+  validateMessages,
+  buildSystemPrompt,
+  CANARY,
+  MAX_MESSAGES,
+  MAX_CONTENT_CHARS
+} from './chat-core.js';
 
 const ok = c => ({ role: 'user', content: c });
 
@@ -46,4 +52,32 @@ test('rejects content longer than MAX_CONTENT_CHARS', () => {
 
 test('accepts content exactly at MAX_CONTENT_CHARS', () => {
   assert.equal(validateMessages([ok('x'.repeat(MAX_CONTENT_CHARS))]).ok, true);
+});
+
+const prompt = buildSystemPrompt('CORPUS-BODY-MARKER');
+
+test('system prompt embeds the corpus', () => {
+  assert.ok(prompt.includes('CORPUS-BODY-MARKER'));
+});
+
+test('system prompt contains the canary', () => {
+  assert.ok(prompt.includes(CANARY));
+  assert.ok(CANARY.length > 8, 'canary must be distinctive enough to detect');
+});
+
+// These assertions exist so a defence cannot be silently dropped in a
+// refactor. They prove each rule is PRESENT, not that the model obeys it.
+test('system prompt states every required defence', () => {
+  const required = [
+    /untrusted/i,                          // user input is data, not instruction
+    /never invent/i,                       // no fabrication
+    /only.*corpus|corpus.*only/i,          // corpus-only authority
+    /context.*not.*(fact|evidence)/i,      // history is context only
+    /never reveal|do not reveal/i,         // non-disclosure
+    /never exaggerate|do not exaggerate/i, // no embellishment
+    /jibz33on@gmail\.com/                  // contact route for refusals
+  ];
+  for (const re of required) {
+    assert.match(prompt, re, `system prompt is missing a required rule: ${re}`);
+  }
 });
