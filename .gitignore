@@ -12,6 +12,7 @@ skills-lock.json
 
 # Node
 node_modules/
+.wrangler/
 .dev.vars
 
 # Personal source material (not for public repo).
