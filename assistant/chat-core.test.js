@@ -75,6 +75,8 @@ test('system prompt states every required defence', () => {
     /context.*not.*(fact|evidence)/i,      // history is context only
     /never reveal|do not reveal/i,         // non-disclosure
     /never exaggerate|do not exaggerate/i, // no embellishment
+    /exaggerated marketing language/i,     // no overclaiming in tone
+    /unsupported claims/i,                 // positive framing must stay accurate
     /jibz33on@gmail\.com/                  // contact route for refusals
   ];
   for (const re of required) {
