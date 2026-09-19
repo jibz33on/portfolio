@@ -61,54 +61,72 @@
   <p class="hero-meta">B.Tech · CUSAT &nbsp;·&nbsp; M.Acc · Deakin University, Australia</p>
 </section>
 
-<!-- PROJECTS -->
+<!-- SELECTED WORK -->
 <section id="projects">
   <div class="section-header reveal">
     <span class="section-num">01</span>
-    <h2 class="section-title">Featured Projects</h2>
+    <h2 class="section-title">Selected Work</h2>
     <div class="section-line"></div>
   </div>
 
   <div class="featured-grid reveal">
+    <!-- Gistr -->
+    <div class="project-featured">
+      <div class="project-meta">
+        <span class="project-domain">LLM Evaluation</span>
+      </div>
+      <span class="role-badge">AI Engineer (Contract)</span>
+      <h3 class="project-name">Gistr — RAG Evaluation</h3>
+      <p class="project-desc">
+        LLM evaluation and answer-quality work for a live agentic RAG learning platform. Reviewed <strong>~250 cases by hand</strong>, redesigned an accuracy check that was measuring the wrong part of the pipeline, and traced a duplicate-content retrieval bug confirmed across <strong>8 production sessions</strong>.
+      </p>
+      <div class="tech-badges">
+        <span class="badge">LangSmith</span>
+        <span class="badge">PostHog</span>
+        <span class="badge">LLM-as-judge</span>
+        <span class="badge">LangGraph</span>
+        <span class="badge">FastAPI</span>
+      </div>
+      <a class="project-link" href="#">Contract — Gistr</a>
+    </div>
+
     <!-- RRE -->
     <div class="project-featured">
       <div class="project-meta">
         <span class="project-domain">E-commerce AI</span>
+        <span class="prod-badge status-deployed"><span class="prod-dot"></span>Private — PM Accelerator</span>
       </div>
       <span class="role-badge">Tech Lead</span>
       <h3 class="project-name">Revenue Recovery Engine</h3>
       <p class="project-desc">
-        Multi-agent pipeline — <strong>SCOUT → CRITIC → PRESCRIBER</strong> — that audits product listings, detects revenue loss signals, and generates evidence-backed prescriptions. Orchestrated via <strong>Inngest</strong>, served on <strong>Next.js</strong> with demo mode gated by <code>isDemo</code> flag.
+        Multi-agent pipeline — <strong>scrape → critique → prescribe</strong> — that audits product listings and returns specific description fixes. Scoring stays in code, not the LLM, and work is split into <strong>Inngest</strong> steps to beat a hard 10-second serverless timeout.
       </p>
       <div class="tech-badges">
         <span class="badge">TypeScript</span>
         <span class="badge">Next.js</span>
         <span class="badge">Supabase</span>
         <span class="badge">Inngest</span>
-        <span class="badge">Vertex AI</span>
-        <span class="badge">GCP</span>
+        <span class="badge">Google Gemini</span>
       </div>
       <a class="project-link" href="#">Private — PM Accelerator</a>
     </div>
 
-    <!-- RemiMinder -->
+    <!-- FraudSentinel -->
     <div class="project-featured">
       <div class="project-meta">
-        <span class="project-domain">Healthcare AI</span>
-        <span class="prod-badge status-deployed"><span class="prod-dot"></span>Deployed</span>
+        <span class="project-domain">Fraud Detection AI</span>
       </div>
-      <span class="role-badge">Founding Engineer</span>
-      <h3 class="project-name">RemiMinder</h3>
+      <span class="role-badge">Solo Builder</span>
+      <h3 class="project-name">FraudSentinel</h3>
       <p class="project-desc">
-        <strong>HIPAA-compliant</strong> clinical audio-to-record pipeline on GCP — converts physician audio into structured medical records using <strong>MedGemma</strong>. FastAPI backend deployed on Cloud Run with full IAM hardening.
+        Flags suspicious transactions and explains why in language a human reviewer can act on, instead of returning a black-box risk score. A <strong>three-agent LangGraph workflow</strong> — detection, investigation, decision — with risk scoring kept rule-based and separate from the LLM for deterministic, auditable verdicts.
       </p>
       <div class="tech-badges">
         <span class="badge">Python</span>
         <span class="badge">FastAPI</span>
-        <span class="badge">GCP</span>
-        <span class="badge">Cloud Run</span>
-        <span class="badge">Vertex AI</span>
-        <span class="badge">MedGemma</span>
+        <span class="badge">LangGraph</span>
+        <span class="badge">Llama 3.3 70B</span>
+        <span class="badge">pgvector</span>
       </div>
       <a class="project-link" href="#">Private</a>
     </div>
@@ -130,13 +148,121 @@
         <span class="badge">GPT-4o</span>
         <span class="badge">ElevenLabs</span>
         <span class="badge">Next.js</span>
-        <span class="badge">Supabase</span>
       </div>
       <a class="project-link" href="#">Private</a>
     </div>
   </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-header reveal">
+    <span class="section-num">02</span>
+    <h2 class="section-title">Experience</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="timeline reveal">
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <span class="timeline-role">AI Engineer (Contract)</span>
+          <span class="timeline-dates">Jun 2026 – Aug 2026</span>
+        </div>
+        <div class="timeline-company">Gistr · Remote</div>
+        <p class="timeline-theme">LLM evaluation &amp; observability for a live agentic RAG product.</p>
+        <ul class="timeline-bullets">
+          <li>Built an isolated LLM evaluation system for answer accuracy, so testing could never affect live users.</li>
+          <li>Reviewed ~250 cases by hand and found the existing accuracy check was measuring the wrong part of the pipeline — redesigned it to catch answers the AI invented or couldn't support with a source.</li>
+          <li>Defined 12 agent tool-waste patterns and found two retrieval tools returning duplicate content, confirmed across 8 production sessions.</li>
+          <li>Created a hand-labelled golden dataset and version-controlled evaluation prompts to validate automated scores against ground truth.</li>
+        </ul>
+        <div class="timeline-tags">
+          <span class="badge">LangSmith</span>
+          <span class="badge">PostHog</span>
+          <span class="badge">LLM-as-judge</span>
+          <span class="badge">agent-as-judge</span>
+          <span class="badge">LangGraph</span>
+          <span class="badge">FastAPI</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <span class="timeline-role">AI Engineer (Project-based) · Technical Lead</span>
+          <span class="timeline-dates">Sep 2025 – Jun 2026</span>
+        </div>
+        <div class="timeline-company">PM Accelerator · Kochi, India (Remote)</div>
+        <p class="timeline-theme">Backend and architecture lead across 3 concurrent production AI systems.</p>
+        <ul class="timeline-bullets">
+          <li>Led Python backend development across 3 concurrent production AI systems in healthcare, financial intelligence, and e-commerce.</li>
+          <li>Acted as Technical Lead across 3 cross-functional teams, owning architecture decisions and reviewing code through structured pull requests.</li>
+          <li>Worked with product managers, frontend engineers, and non-technical stakeholders to turn business requirements into deployed AI systems.</li>
+        </ul>
+        <div class="timeline-tags">
+          <span class="badge">Python</span>
+          <span class="badge">FastAPI</span>
+          <span class="badge">LangGraph</span>
+          <span class="badge">LangChain</span>
+          <span class="badge">PostgreSQL</span>
+          <span class="badge">GCP</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <div class="timeline-header">
+          <span class="timeline-role">AI Engineer Intern</span>
+          <span class="timeline-dates">Sep 2024 – Aug 2025</span>
+        </div>
+        <div class="timeline-company">GALTech Technologies · Kerala, India</div>
+        <p class="timeline-theme">Conversational AI systems on production FastAPI backends.</p>
+        <ul class="timeline-bullets">
+          <li>Built conversational AI systems on FastAPI backends with session management, conversation flow, and API integrations for production chatbot deployments.</li>
+        </ul>
+        <div class="timeline-tags">
+          <span class="badge">Python</span>
+          <span class="badge">FastAPI</span>
+          <span class="badge">Conversational AI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MORE WORK -->
+<section id="more-work">
+  <div class="section-header reveal">
+    <span class="section-num">03</span>
+    <h2 class="section-title">More Work</h2>
+    <div class="section-line"></div>
+  </div>
 
   <div class="small-grid reveal">
+    <!-- RemiMinder -->
+    <div class="project-small">
+      <div class="project-meta">
+        <span class="project-domain">Healthcare AI</span>
+        <span class="prod-badge status-deployed"><span class="prod-dot"></span>Deployed</span>
+      </div>
+      <span class="role-badge">Founding Engineer</span>
+      <h3 class="project-name">RemiMinder</h3>
+      <p class="project-desc">HIPAA-compliant audio-to-record pipeline on GCP. MedGemma extracts structured clinical fields from consultation audio; Gemini summarizes. ~60-second turnaround on a 15-minute recording.</p>
+      <div class="tech-badges">
+        <span class="badge">Python</span>
+        <span class="badge">FastAPI</span>
+        <span class="badge">GCP</span>
+        <span class="badge">MedGemma</span>
+      </div>
+      <a class="project-link" href="#">Private</a>
+    </div>
+
     <!-- TickerPulse -->
     <div class="project-small">
       <div class="project-meta">
