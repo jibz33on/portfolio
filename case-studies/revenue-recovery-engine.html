@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Revenue Recovery Engine — Case Study | Jibin Kunjumon</title>
+<meta name="description" content="A multi-agent e-commerce listing-audit pipeline, orchestrated as durable serverless steps to work within a hard execution-time constraint."/>
+<meta property="og:title" content="Revenue Recovery Engine — Case Study | Jibin Kunjumon"/>
+<meta property="og:description" content="A multi-agent e-commerce listing-audit pipeline, orchestrated as durable serverless steps to work within a hard execution-time constraint."/>
+<meta property="og:type" content="article"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles.css"/>
+<link rel="stylesheet" href="../case-study.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><a href="../index.html" style="color:inherit;text-decoration:none">Jibin<span>.</span></a></div>
+  <ul class="nav-links">
+    <li><a href="../index.html#hero">Home</a></li>
+    <li><a href="../index.html#experience">Experience</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#certificates">Certificates</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="case-study-breadcrumb">
+  <a href="../index.html#projects">← Back to Projects</a>
+</div>
+
+<header class="case-study-header">
+  <div class="case-study-meta">
+    <span class="project-domain">E-commerce AI</span>
+    <span class="role-badge">Tech Lead</span>
+  </div>
+  <h1 class="case-study-title">Revenue Recovery Engine</h1>
+</header>
+
+<article class="case-study-body">
+  <h2>Overview</h2>
+  <p>Revenue Recovery Engine (RRE) turns a slow, manual product-listing audit into a paste-a-URL workflow that gives a merchant specific description fixes to reduce returns. It runs as a multi-agent pipeline — scrape, critique, prescribe — built at PM Accelerator, where I served as Technical Lead.</p>
+
+  <h2>The Problem</h2>
+  <p>Auditing a product listing for the kind of gaps that lead to returns — missing details, ambiguous sizing, unclear specifications — is slow and inconsistent when done manually. Merchants needed something faster than a manual review, but generic AI feedback isn't useful either: what actually helps is specific, actionable description fixes tied to real evidence from the listing and its reviews.</p>
+
+  <h2>Architecture</h2>
+  <div class="arch-diagram">
+    <div class="arch-box">Listing URL</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Scrape</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Critique</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Prescribe</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Description Fixes</div>
+  </div>
+  <p>Scraping (via Apify), critique, and prescription run as a scrape → critique → prescribe pipeline, with Gemini powering the LLM reasoning and Supabase/pgvector plus Zod schemas underpinning the data and validation layer. Because the full multi-agent workflow risked exceeding the serverless platform's execution-time limit, the pipeline runs as a series of durable Inngest steps rather than a single long-running request — each stage executes independently while Inngest coordinates the overall process.</p>
+
+  <h2>Approach &amp; My Role</h2>
+  <p>As Technical Lead, I defined the boundary between LLM reasoning and deterministic logic, and set the step-based pipeline pattern the team built around. That included helping structure the workflow into durable Inngest steps so the pipeline could operate within the platform's execution constraints, and coordinating the implementation across the team so everyone understood the stage boundaries, inputs/outputs, and responsibilities of each part of the workflow.</p>
+
+  <h2>Technical Decisions</h2>
+  <h3>Keeping scoring and yes/no decisions in code, not the LLM</h3>
+  <p>Scoring and pass/fail decisions run in code rather than being left to the LLM, so results can't be invented — the model contributes reasoning and drafting, but the decision that has to be right stays deterministic and auditable.</p>
+  <h3>Splitting the workflow into durable Inngest steps</h3>
+  <p>Running the entire multi-agent workflow inside a single request risked hitting the serverless platform's execution-time limit. Structuring it as durable Inngest steps let each stage execute independently while the overall process stayed coordinated — the harder part wasn't adopting Inngest, it was deciding where the step boundaries should go so the workflow stayed understandable and reliable without turning every small operation into its own step.</p>
+
+  <h2>Challenges</h2>
+  <p>The main challenge was designing the multi-agent workflow around the platform's hard execution-time constraint. With scraping, critique, and prescription as separate stages, trying to run the whole thing inside one request risked exceeding the limit — so as Technical Lead, I had to help decide where the step boundaries should sit, balancing reliability against turning the workflow into an unmanageable number of tiny steps.</p>
+  <p>That decision also had to be communicated and coordinated across the team, so everyone building different parts of the pipeline understood the stage boundaries, inputs and outputs, and where their piece's responsibility started and ended.</p>
+
+  <h2>Results</h2>
+  <p>RRE was successfully structured as an end-to-end multi-stage system rather than a single long-running request — the scrape → critique → prescribe pipeline could move through durable Inngest steps, letting the multi-agent workflow operate within the serverless platform's execution constraints. As Technical Lead, the outcome I'd point to is the workflow structure itself: a workable agentic architecture with clear stage boundaries, coordinated reliably across a team.</p>
+
+  <h2>Lessons Learned</h2>
+  <p>The biggest lesson was that workflow architecture matters as much as agent design in a production-oriented agentic system — the LLM agents were only one part of the problem; the system also needed clear stage boundaries, durable execution, well-defined inputs and outputs, and coordination across the team building it.</p>
+  <p>If I did this again, I'd define the workflow boundaries and contracts between stages even earlier, which would make parallel development easier and reduce ambiguity about where responsibilities belong. Leading the project also taught me that being Technical Lead isn't just making technical decisions — it's making the architecture understandable enough that multiple people can implement different parts of it consistently. The broader lesson: agentic systems need orchestration designed around the constraints of the runtime, not just around what the agents can theoretically do.</p>
+
+  <h2>Tech Stack</h2>
+  <div class="tech-badges">
+    <span class="badge">Python</span>
+    <span class="badge">Next.js 15</span>
+    <span class="badge">TypeScript</span>
+    <span class="badge">Inngest</span>
+    <span class="badge">Supabase</span>
+    <span class="badge">pgvector</span>
+    <span class="badge">Google Gemini</span>
+    <span class="badge">Zod</span>
+    <span class="badge">Vercel</span>
+    <span class="badge">Apify</span>
+  </div>
+
+  <h2>GitHub &amp; Demo</h2>
+  <p>Private project — built for PM Accelerator, code isn't publicly shared.</p>
+</article>
+
+<footer>
+  <span class="footer-text">Built by Jibin Kunjumon · 2026</span>
+  <div class="footer-links">
+    <a href="https://github.com/jibz33on" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/jibin-kunjumon" target="_blank">LinkedIn</a>
+    <a href="mailto:jibz33on@gmail.com">Email</a>
+  </div>
+</footer>
+
+</body>
+</html>
