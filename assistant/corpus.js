@@ -44,8 +44,9 @@ systems (LangGraph); LLM integration and evaluation; AI observability
 
 Education: B.Tech, CUSAT. M.Acc, Deakin University, Australia.
 
-Availability: open to AI Engineer roles. He is not currently in a role — both
-the Gistr contract and the PM Accelerator engagement have ended.
+Availability: open to full-time AI Engineer roles and interesting
+collaborations. Do not characterise his current employment status beyond this —
+the engagement dates under Experience are the only other established facts.
 
 ## Experience
 
