@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MindGym — Case Study | Jibin Kunjumon</title>
+<meta name="description" content="A voice-guided mental-performance coaching app — a single-LLM-call session pipeline with a validation layer and resilient audio-to-text fallback."/>
+<meta property="og:title" content="MindGym — Case Study | Jibin Kunjumon"/>
+<meta property="og:description" content="A voice-guided mental-performance coaching app — a single-LLM-call session pipeline with a validation layer and resilient audio-to-text fallback."/>
+<meta property="og:type" content="article"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles.css"/>
+<link rel="stylesheet" href="../case-study.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><a href="../index.html" style="color:inherit;text-decoration:none">Jibin<span>.</span></a></div>
+  <ul class="nav-links">
+    <li><a href="../index.html#hero">Home</a></li>
+    <li><a href="../index.html#experience">Experience</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#certificates">Certificates</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="case-study-breadcrumb">
+  <a href="../index.html#projects">← Back to Projects</a>
+</div>
+
+<header class="case-study-header">
+  <div class="case-study-meta">
+    <span class="project-domain">Mental Health AI</span>
+    <span class="role-badge">Founding Engineer</span>
+  </div>
+  <h1 class="case-study-title">MindGym</h1>
+</header>
+
+<article class="case-study-body">
+  <h2>Overview</h2>
+  <p>MindGym is a voice-guided mental-performance coaching app, live in production, built by a small team. It generates a personalized five-phase coaching session that adapts its tone to how the user is feeling, then delivers it as spoken audio.</p>
+  <p>I worked as an AI Engineer on the team, primarily responsible for the AI systems — the session-generation pipeline, the validation layer around model output, and the related implementation and code review — while collaborating with the rest of the team on the surrounding product.</p>
+
+  <h2>The Problem</h2>
+  <p>The hard problem wasn't generating a coaching session — it was safety and reliability. The AI had to be built so it couldn't produce an unsafe or off-tone response, tone couldn't drift across a multi-phase session, every response had to complete inside a hard latency budget, and the experience had to hold up even when audio playback itself failed on a real device.</p>
+
+  <h2>Architecture</h2>
+  <div class="arch-diagram">
+    <div class="arch-box">User Session Input</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">FastAPI</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Single LLM Call</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Validation</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Five-Phase Session</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Per-Phase ElevenLabs TTS</div>
+    <span class="arch-arrow">→</span>
+    <div class="arch-box">Spoken Output (text fallback)</div>
+  </div>
+  <p>The user provides structured session input through the UI — event details, mood/feeling information, and an optional typed note. FastAPI builds the session request and makes a single streamed call to GPT-4o to generate the five coaching phases — Breathe, Ground, Rehearse, Anchor, Close. The generated text passes through a validation layer before any phase is delivered. Each phase is then converted to speech via ElevenLabs, with the next phase's audio prefetched while the current one plays; if audio generation or playback fails, the session text remains available as a fallback.</p>
+
+  <h2>Approach &amp; My Role</h2>
+  <p>My contribution centered on the AI systems: designing the session-generation pipeline, building the validation layer that controls model output, and reviewing AI-related implementation work, alongside the rest of the team building the broader product around it.</p>
+
+  <h2>Technical Decisions</h2>
+  <h3>A single LLM call instead of a multi-agent chain</h3>
+  <p>A hard 10-second timeout ruled out a multi-agent chain for session generation — too much latency risk for too little benefit. A single streamed LLM call, with instant fallback templates if anything fails, keeps every response inside the latency budget without sacrificing personalization.</p>
+  <h3>Tone controlled outside the model</h3>
+  <p>Tone is handled by a lookup table that maps user state to a per-phase tone arc, rather than leaving tone consistency to the model. Across a 5-phase session, that keeps tone from drifting in ways a single LLM call couldn't reliably self-correct.</p>
+  <h3>A validation layer that can reject the model's own output</h3>
+  <p>Generated responses pass through a validation layer before reaching the user — one guard strips motivational language for high-anxiety users, another checks that required context is present. The static system prompt is kept separate from the dynamic user prompt, so prompts stay auditable and versionable rather than being reconstructed ad hoc per request.</p>
+
+  <h2>Challenges</h2>
+  <p>The main challenge was making the voice-output experience reliable across browsers, and especially on iOS. Because each phase's audio is generated and prefetched progressively while the previous phase plays, the app runs into real browser audio constraints — iOS autoplay and user-interaction restrictions in particular, where playback could fail even though the audio itself had generated successfully.</p>
+  <p>The challenge wasn't just generating audio — it was designing playback so an audio failure never broke the coaching experience. That meant handling playback failures explicitly and preserving the text-based session as a fallback at every phase. The broader lesson was that a streaming voice experience has to be designed around the reliability constraints of the client platform, not just the capabilities of the AI and TTS services.</p>
+
+  <h2>Results</h2>
+  <p>MindGym reached a live, usable production state with the complete coaching flow working end-to-end — structured session input, a single-call LLM generation, validation, and progressive voice delivery via ElevenLabs. The result worth emphasizing is resilience: the experience doesn't depend on every AI or audio component succeeding. If audio playback fails, the generated session remains available as text, so a TTS or browser playback issue doesn't break the user experience.</p>
+
+  <h2>Lessons Learned</h2>
+  <p>MindGym reinforced that designing an AI experience means designing the complete product flow, not just the model call — working across the stack meant thinking about how generation, validation, the backend API, the frontend, TTS, and browser playback all fit together. A technically good model response isn't enough if the surrounding product experience is unreliable.</p>
+  <p>The audio playback issues drove that home directly. If I were doing it again, I'd account for client-platform constraints like iOS audio behavior earlier in the architecture and testing process, rather than treating them as an integration problem discovered later. I also learned that a simple architecture can be the right call over a complex agentic one — MindGym deliberately uses a single LLM call with validation and deterministic controls around it, rather than adding agents where they wouldn't add clear value. The broader lesson: good AI engineering is as much about controlling the boundaries around the model as it is about the model itself.</p>
+
+  <h2>Tech Stack</h2>
+  <div class="tech-badges">
+    <span class="badge">Python</span>
+    <span class="badge">FastAPI</span>
+    <span class="badge">GPT-4o</span>
+    <span class="badge">ElevenLabs</span>
+    <span class="badge">Supabase</span>
+    <span class="badge">Pydantic v2</span>
+    <span class="badge">Next.js</span>
+    <span class="badge">Railway</span>
+  </div>
+
+  <h2>GitHub &amp; Demo</h2>
+  <p>Private project — no public repo or demo link available.</p>
+</article>
+
+<footer>
+  <span class="footer-text">Built by Jibin Kunjumon · 2026</span>
+  <div class="footer-links">
+    <a href="https://github.com/jibz33on" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/jibin-kunjumon" target="_blank">LinkedIn</a>
+    <a href="mailto:jibz33on@gmail.com">Email</a>
+  </div>
+</footer>
+
+</body>
+</html>
