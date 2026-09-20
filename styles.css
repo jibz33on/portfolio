@@ -316,12 +316,19 @@ section{max-width:1100px;margin:0 auto;padding:5.5rem 2.5rem}
 .assistant-header{font-family:'Manrope',sans-serif;font-weight:800;font-size:.9rem;color:var(--text)}
 .assistant-note{font-size:.7rem;color:var(--muted);line-height:1.5}
 .assistant-chips{display:flex;flex-wrap:wrap;gap:.4rem}
+/* The chips are onboarding only. They cost ~124px — a quarter of the panel —
+   so the widget hides them once a conversation starts and gives that height
+   to the transcript. Needed because display:flex above would beat [hidden]. */
+.assistant-chips[hidden]{display:none}
 .assistant-chip{
   font-size:.68rem;padding:.35rem .65rem;background:var(--surface2);color:var(--text-dim);
   border:1px solid var(--border-subtle);border-radius:999px;cursor:pointer;text-align:left;transition:border-color .2s,color .2s
 }
 .assistant-chip:hover{border-color:var(--accent);color:var(--accent)}
-.assistant-messages{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem;max-height:220px}
+/* No max-height: flex:1 inside the panel's own max-height already bounds this,
+   and a fixed cap would keep the transcript at 220px even after the chips free
+   up room — which is most of the space this change is meant to reclaim. */
+.assistant-messages{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem}
 /* pre-wrap: replies are inserted with textContent (never innerHTML), so the
    assistant's line breaks and bullet lines need to survive as written. Without
    it every list collapses into one run-on paragraph. */
@@ -337,6 +344,10 @@ section{max-width:1100px;margin:0 auto;padding:5.5rem 2.5rem}
 .assistant-form .btn-primary{padding:.55rem 1.1rem;font-size:.75rem}
 @media(max-width:768px){
   .assistant-panel{width:calc(100vw - 3rem);right:-0.5rem}
+  /* 16px minimum. iOS Safari zooms the page when a focused input is smaller
+     than this and never zooms back out, leaving the visitor on a zoomed,
+     horizontally scrolled page. Padding keeps the control visually compact. */
+  .assistant-input{font-size:16px}
 }
 
 /* CONTACT */

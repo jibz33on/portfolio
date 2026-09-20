@@ -58,6 +58,11 @@
         return;
       }
 
+      // The example questions are onboarding. Once a conversation is under way
+      // they are just chrome, and the ~124px they occupy is worth more to the
+      // transcript than to a prompt the visitor has already acted on.
+      chips.hidden = true;
+
       renderMessage(messages, question, 'user');
       history.push({ role: 'user', content: question });
       userTurns++;
