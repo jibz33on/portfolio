@@ -7,6 +7,11 @@
   ];
 
   const MAX_USER_TURNS = 10;
+  // Mirrors MAX_ASSISTANT_CONTENT_CHARS in chat-core.js. This widget is a plain
+  // script on five pages, so it cannot import the constant. History must only
+  // ever hold messages the endpoint will accept back, otherwise one long reply
+  // wedges every later turn in the session.
+  const MAX_REPLY_HISTORY_CHARS = 2000;
   const UNAVAILABLE = "Ask AI is temporarily unavailable. You can reach Jibin directly at jibz33on@gmail.com or on LinkedIn.";
   const LIMIT_REACHED = "That's the end of this conversation. For more, reach Jibin directly at jibz33on@gmail.com or on LinkedIn.";
 
@@ -71,7 +76,13 @@
         if (typeof data.reply !== 'string') throw new Error('bad response');
 
         pending.textContent = data.reply;
-        history.push({ role: 'assistant', content: data.reply });
+        if (data.reply.length <= MAX_REPLY_HISTORY_CHARS) {
+          history.push({ role: 'assistant', content: data.reply });
+        } else {
+          // Answered, but too long to replay. Drop the question it answered so
+          // history stays an alternation the endpoint still accepts.
+          history.pop();
+        }
       } catch {
         pending.textContent = UNAVAILABLE;
         // Roll back so a failed turn does not poison later context.

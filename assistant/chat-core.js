@@ -1,6 +1,22 @@
 export const MAX_MESSAGES = 20;
+
+// Caps are per role. A user turn is a typed question, so 1000 chars is generous.
+// An assistant turn is our own reply replayed back as history: max_tokens 300
+// has been measured emitting 1300-1600 chars, so a single flat 1000-char cap
+// made the server reject its own output and broke every turn after the first.
+//
+// 2000 is a measured headroom, not a derived bound — chars-per-token varies
+// with content, so changing max_tokens in functions/api/chat.js means
+// re-checking this number. Still bounded, and deliberately so: history is
+// client-supplied, so an assistant turn here may be forged rather than ours.
 export const MAX_CONTENT_CHARS = 1000;
-const ROLES = new Set(['user', 'assistant']);
+export const MAX_ASSISTANT_CONTENT_CHARS = 2000;
+
+const MAX_CHARS_BY_ROLE = Object.freeze({
+  user: MAX_CONTENT_CHARS,
+  assistant: MAX_ASSISTANT_CONTENT_CHARS
+});
+const ROLES = new Set(Object.keys(MAX_CHARS_BY_ROLE));
 
 export function validateMessages(messages) {
   if (!Array.isArray(messages)) return { ok: false, error: 'messages must be an array' };
@@ -11,7 +27,7 @@ export function validateMessages(messages) {
     if (!m || typeof m !== 'object') return { ok: false, error: 'malformed message' };
     if (!ROLES.has(m.role)) return { ok: false, error: 'invalid role' };
     if (typeof m.content !== 'string') return { ok: false, error: 'content must be a string' };
-    if (m.content.length > MAX_CONTENT_CHARS) return { ok: false, error: 'message too long' };
+    if (m.content.length > MAX_CHARS_BY_ROLE[m.role]) return { ok: false, error: 'message too long' };
   }
   return { ok: true };
 }
