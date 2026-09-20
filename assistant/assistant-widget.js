@@ -76,11 +76,16 @@
         if (typeof data.reply !== 'string') throw new Error('bad response');
 
         pending.textContent = data.reply;
-        if (data.reply.length <= MAX_REPLY_HISTORY_CHARS) {
+        // Store a reply only if it is whole and replayable. A reply the server
+        // rejects would wedge the conversation; one cut off at max_tokens would
+        // become half-a-sentence of "established context" for every later turn.
+        const isStorable =
+          data.reply.length <= MAX_REPLY_HISTORY_CHARS && data.truncated !== true;
+        if (isStorable) {
           history.push({ role: 'assistant', content: data.reply });
         } else {
-          // Answered, but too long to replay. Drop the question it answered so
-          // history stays an alternation the endpoint still accepts.
+          // Answered on screen, but not remembered. Drop the question it
+          // answered so history stays an alternation the endpoint accepts.
           history.pop();
         }
       } catch {

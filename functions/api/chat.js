@@ -2,7 +2,12 @@ import { validateMessages, buildSystemPrompt } from '../../assistant/chat-core.j
 import { CORPUS } from '../../assistant/corpus.js';
 
 const MODEL = 'claude-haiku-4-5-20251001';
-const MAX_TOKENS = 300;
+// Must hold MAX_ANSWER_WORDS (the response policy's ceiling) without cutting
+// the answer off, and must stay small enough that a reply still fits
+// MAX_ASSISTANT_CONTENT_CHARS when replayed as history. Both bounds are pinned
+// by tests in assistant/chat-core.test.js — at 300 the policy's own ceiling
+// truncated, which is what moved this number.
+const MAX_TOKENS = 360;
 const TEMPERATURE = 0.3;
 
 const fail = (status) =>
@@ -59,7 +64,11 @@ export async function onRequestPost(context) {
   const reply = data?.content?.[0]?.text;
   if (typeof reply !== 'string') return fail(502);
 
-  return new Response(JSON.stringify({ reply }), {
+  // Surfaced so "never knowingly truncate" is testable from outside: guessing
+  // at it from trailing punctuation false-positives on bullet lists.
+  const truncated = data?.stop_reason === 'max_tokens';
+
+  return new Response(JSON.stringify({ reply, truncated }), {
     status: 200,
     headers: { 'content-type': 'application/json' }
   });

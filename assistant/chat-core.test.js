@@ -7,7 +7,8 @@ import {
   CANARY,
   MAX_MESSAGES,
   MAX_CONTENT_CHARS,
-  MAX_ASSISTANT_CONTENT_CHARS
+  MAX_ASSISTANT_CONTENT_CHARS,
+  MAX_ANSWER_WORDS
 } from './chat-core.js';
 
 const ok = c => ({ role: 'user', content: c });
@@ -162,6 +163,99 @@ test('system prompt embeds the corpus', () => {
 test('system prompt contains the canary', () => {
   assert.ok(prompt.includes(CANARY));
   assert.ok(CANARY.length > 8, 'canary must be distinctive enough to detect');
+});
+
+// These assertions exist so a rule cannot be silently dropped in a refactor.
+// They prove each rule is PRESENT, not that the model obeys it — whether the
+// model complies is what the live suite samples.
+// The prompt is hard-wrapped for readability, so a rule can straddle a line
+// break. Match against a whitespace-collapsed copy or the assertions become a
+// test of where the line wraps rather than of what the prompt says.
+const flat = prompt.replace(/\s+/g, ' ');
+
+test('system prompt states every response-quality rule', () => {
+  const required = [
+    /first sentence answers the question|lead with the answer/i, // answer first
+    /decide which kind of question this is|match the length to the question/i, // adaptive length
+    /hard limits, not targets/i,                // the per-type budgets bind
+    new RegExp(`${MAX_ANSWER_WORDS} words`),    // an explicit ceiling exists
+    /never begin a list .*you cannot finish/i,  // no knowingly truncated answers
+    /follow-up/i,                               // progressive disclosure
+    /evaluated .*built|never turn evaluated into built/i, // ownership vocabulary
+    /never compare him to other engineers/i,    // no market-wide claims
+    /framing device, not a refrain/i,           // tagline is not a slogan
+    /never invent business impact/i,            // no fabricated outcomes
+    /do not pitch/i,                            // no availability sales pitch
+    /never use Markdown/i,                      // plain-text rendering surface
+    /do not restate the same thesis/i,          // stop after the evidence
+    /explicitly ties that technology to that specific project/i, // tech grounding
+    /leave the project out/i,                   // the bright line that stops inference
+    /never answer with a bare list/i,           // ownership verbs in tech answers
+    /portfolio classifications/i,               // no inferred "case study" label
+    /Exactly two roles, most recent first/i     // overview chronology
+  ];
+  for (const re of required) {
+    assert.match(flat, re, `system prompt is missing a response rule: ${re}`);
+  }
+});
+
+// The banned vocabulary from the response policy. Listed explicitly so removing
+// one from the prompt is a deliberate edit that fails a test, not a silent loss.
+test('system prompt bans the promotional adjectives by name', () => {
+  for (const word of [
+    'substantial', 'deep experience', 'extensive', 'rare',
+    'highly reliable', 'industry-leading', 'at scale', 'exceptional', 'impressive'
+  ]) {
+    assert.ok(
+      flat.includes(word),
+      `system prompt must name "${word}" as an adjective to avoid`
+    );
+  }
+});
+
+// max_tokens is squeezed between two limits and must satisfy both.
+//
+// Floor: the policy asks for answers up to MAX_ANSWER_WORDS, so the budget must
+// hold that many words or the prompt is asking for answers it will cut off.
+// Measured against this corpus: 177 words consumed 300 tokens (1.69/word), so
+// 1.8 is a conservative ceiling on that ratio.
+//
+// Roof: the reply is replayed as history on the next turn, so a full-length
+// reply must still fit MAX_ASSISTANT_CONTENT_CHARS. Exceeding this reintroduces
+// the multi-turn bug the role-specific caps exist to fix.
+//
+// Measured across six answer shapes under this prompt: prose runs 4.2-5.1
+// chars/token (worst 5.08, the Gistr ownership answer) while bullet lists run
+// 2.2-2.9 — many short lines cost more tokens per character, so list-heavy
+// replies are the safe case and dense prose is the binding one. 5.5 is the
+// worst measured ratio plus a buffer for shapes not sampled here.
+const TOKENS_PER_WORD = 1.8;
+const CHARS_PER_TOKEN = 5.5;
+
+const maxTokens = (() => {
+  const fn = readFileSync(new URL('../functions/api/chat.js', import.meta.url), 'utf8');
+  const match = fn.match(/MAX_TOKENS\s*=\s*(\d+)/);
+  assert.ok(match, 'functions/api/chat.js must define MAX_TOKENS');
+  return Number(match[1]);
+})();
+
+test('max_tokens can hold the longest answer the policy permits', () => {
+  const needed = Math.ceil(MAX_ANSWER_WORDS * TOKENS_PER_WORD);
+  assert.ok(
+    maxTokens >= needed,
+    `MAX_TOKENS ${maxTokens} cannot hold ${MAX_ANSWER_WORDS} words ` +
+      `(needs >= ${needed}); answers will truncate mid-sentence`
+  );
+});
+
+test('a full-length reply still fits the assistant history cap', () => {
+  const worstCase = maxTokens * CHARS_PER_TOKEN;
+  assert.ok(
+    worstCase <= MAX_ASSISTANT_CONTENT_CHARS,
+    `MAX_TOKENS ${maxTokens} can emit ~${worstCase} chars, over the ` +
+      `${MAX_ASSISTANT_CONTENT_CHARS}-char history cap; long replies would be ` +
+      'dropped from history and wedge the conversation again'
+  );
 });
 
 // These assertions exist so a defence cannot be silently dropped in a

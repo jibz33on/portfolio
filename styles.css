@@ -322,7 +322,10 @@ section{max-width:1100px;margin:0 auto;padding:5.5rem 2.5rem}
 }
 .assistant-chip:hover{border-color:var(--accent);color:var(--accent)}
 .assistant-messages{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:.5rem;max-height:220px}
-.assistant-msg{font-size:.78rem;line-height:1.6;padding:.55rem .75rem;border-radius:12px;max-width:90%}
+/* pre-wrap: replies are inserted with textContent (never innerHTML), so the
+   assistant's line breaks and bullet lines need to survive as written. Without
+   it every list collapses into one run-on paragraph. */
+.assistant-msg{font-size:.78rem;line-height:1.6;padding:.55rem .75rem;border-radius:12px;max-width:90%;white-space:pre-wrap}
 .assistant-msg-user{align-self:flex-end;background:var(--accent);color:var(--accent-ink)}
 .assistant-msg-bot{align-self:flex-start;background:var(--surface2);color:var(--text-dim);border:1px solid var(--border)}
 .assistant-form{display:flex;gap:.5rem}
