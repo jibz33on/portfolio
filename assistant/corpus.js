@@ -44,9 +44,7 @@ systems (LangGraph); LLM integration and evaluation; AI observability
 
 Education: B.Tech, CUSAT. M.Acc, Deakin University, Australia.
 
-Availability: open to full-time AI Engineer roles and interesting
-collaborations. Do not characterise his current employment status beyond this —
-the engagement dates under Experience are the only other established facts.
+Availability, confirmed by Jibin: available for work, seeking AI Engineer and Forward Deployed Engineer roles, and open to relocation for a stable full-time role. This is willingness to relocate, not a claim of work authorization. Salary, visa/work permission and exact start date are for Jibin to discuss directly. If asked about his business activity: Handball AI is a side business; a full-time role would be his main commitment. The engagement dates under Experience are the established employment history.
 
 ## Experience
 

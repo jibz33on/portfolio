@@ -1,0 +1,15 @@
+.assistant-panel{width:min(440px,calc(100vw - 2rem));max-height:min(680px,calc(100dvh - 110px));overflow:hidden}
+.assistant-modes{display:flex;gap:.5rem}
+.assistant-mode{flex:1;padding:.5rem;border:1px solid var(--border-subtle);border-radius:8px;background:var(--surface2);color:var(--text);font:inherit;cursor:pointer}
+.assistant-mode[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.assistant-mode:focus-visible,.assistant-switch-dialog button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.assistant-voice{height:min(490px,calc(100dvh - 250px));min-height:180px}
+.assistant-voice iframe{width:100%;height:100%;border:0;border-radius:10px;background:#f7f5ef}
+.assistant-voice[hidden],.assistant-form[hidden],.assistant-messages[hidden],.assistant-chips[hidden]{display:none}
+.assistant-switch-dialog{max-width:min(360px,calc(100vw - 2rem));border:1px solid var(--border-subtle);border-radius:14px;padding:1.4rem;background:var(--bg,#171411);color:var(--text,#eee)}
+.assistant-switch-dialog::backdrop{background:#0009}
+.assistant-switch-dialog p{margin:.5rem 0 1rem;line-height:1.5}
+.assistant-switch-dialog form{display:flex;gap:.75rem;justify-content:flex-end}
+.assistant-switch-dialog button{padding:.6rem .8rem;border-radius:8px;border:1px solid currentColor;background:transparent;color:inherit;cursor:pointer}
+.assistant-switch-dialog button[value=switch]{background:var(--accent);color:var(--accent-ink)}
+@media(max-width:768px){.assistant-panel{right:-.5rem}.assistant-input{min-width:0}}
